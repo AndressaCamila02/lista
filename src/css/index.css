@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap');
+
+:root {
+    --cor-primaria-1: #000807;
+    --cor-primaria-2: #A2A3BB;
+    --cor-primaria-3: #9395D3;
+    --cor-primaria-4: #B3B7EE;
+    --cor-bg: #FBF9FF;
+
+    --cor-branco: #fff;
+    --cor-preto:#1d1d1d;
+    --cor-sombra: #0e004b7e (0,0,0,0.15);
+    --cor-texto: #333;
+
+    --fonte:"Caveat", cursive;
+
+    --raio: 12px;
+    --transition: 0.3s ease;
+
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--fonte);
+    background: #630b96;
+    background: linear-gradient(90deg, rgba(99, 11, 150, 1) 0%, rgba(129, 77, 163, 1) 25%, rgba(12, 0, 31, 1) 50%, rgba(65, 0, 140, 1) 75%, rgba(91, 71, 112, 1) 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
