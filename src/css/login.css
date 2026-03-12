@@ -8,11 +8,11 @@
     --cor-bg: #FBF9FF;
 
     --cor-branco: #fff;
-    --cor-preto:#1d1d1d;
-    --cor-sombra: #0e004b7e (0,0,0,0.15);
+    --cor-preto: #1d1d1d;
+    --cor-sombra: #0e004b7e (0, 0, 0, 0.15);
     --cor-texto: #333;
 
-    --fonte:"Caveat", cursive;
+    --fonte: "Caveat", cursive;
 
     --raio: 12px;
     --transition: 0.3s ease;
@@ -28,7 +28,8 @@
 body {
     font-family: var(--fonte);
     background: #7315e6;
-    background: radial-gradient(circle, rgba(115, 21, 230, 1) 0%, rgba(46, 0, 0, 1) 51%, rgba(12, 4, 31, 1) 100%);;
+    background: radial-gradient(circle, rgba(115, 21, 230, 1) 0%, rgba(46, 0, 0, 1) 51%, rgba(12, 4, 31, 1) 100%);
+    ;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -63,11 +64,11 @@ body {
         transition: var(--transition);
     }
 
-    input.focus{
+    input.focus {
         border-color: var(--cor-primaria-2);
         outline: none;
         box-shadow: 0 0 0 3px rgba(rgb(81, 35, 112);
+        }
+
+
     }
-
-
-}
