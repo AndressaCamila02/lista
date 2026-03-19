@@ -74,7 +74,7 @@ body {
     input.focus {
         border-color: var(--cor-primaria-2);
         outline: none;
-        box-shadow: 0 0 0 3px rgba(rgb(81, 35, 112);
+        box-shadow: 0 0 0 3px rgba(rgb(81, 35, 112));
     }
 
     .botoes {
