@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400..700&display=swap');
+
+:root {
+    --cor-primaria-1: #000807;
+    --cor-primaria-2: #A2A3BB;
+    --cor-primaria-3: #9395D3;
+    --cor-primaria-4: #B3B7EE;
+    --cor-bg: #FBF9FF;
+
+    --cor-branco: #fff;
+    --cor-preto: #1d1d1d;
+    --cor-sombra: #0e004b7e (0, 0, 0, 0.15);
+    --cor-texto: #333;
+
+    --fonte: "Caveat", cursive;
+
+    --raio: 12px;
+    --transition: 0.3s ease;
+
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--fonte);
+    background: #7315e6;
+    background: radial-gradient(circle, rgba(115, 21, 230, 1) 0%, rgba(46, 0, 0, 1) 51%, rgba(12, 4, 31, 1) 100%);
+    ;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+
+    .container {
+        background: var(--cor-branco);
+        padding: clamp(2rem, 5vh, 3rem);
+        border-radius: var(--raio);
+        box-shadow: 0 8px 24px var(--cor-sombra);
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+    }
+
+    #logo {
+        width: 150px;
+        height: auto;
+        margin-bottom: 20px;
+        border-radius: var(--raio);
+    }
+
+    .titulo {
+        font-size: clamp(1.5rem, 2vm + 1rem, 2rem);
+        color: var(--cor-texto);
+        margin-bottom: 1.5rem;
+        font-weight: 500;
+
+    }
+}
