@@ -151,7 +151,7 @@ body {
         cursor: pointer;
         font-size: 0.9rem;
         transition: var(--transition);
-    }
+}
 }
 
 button[onclick="logout()"] :hover {
