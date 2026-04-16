@@ -1,40 +1,247 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <link rel="shortcut icon" href="src/css/img/Black White Rainbow Minimalist Simple Cute Childrenswear Logo (2).ico" type="image/x-icon">
-   <link rel="manifest" href="manifest.json">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#2ECC71">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    
+    <title>Lista 2026 3° SIS • Minha Lista</title>
+    
+    <link rel="shortcut icon" href="src/css/img/Black White Rainbow Minimalist Simple Cute Childrenswear Logo (2).ico">
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="src/css/index.css">
-    <title>Document</title>
 </head>
 <body>
-    
-    <div class="container">
-        <h2 class="title">Minha lista de compras</h2>
-        <button onclick="logout()">Sair</button>
+    <div class="app-container">
         
-        <ul id="lista"></ul>
-        <input type="text" id="item" placeholder="Novo Item">
-        <button onclick="adicionarItem()">Adicionar</button>
+        <!-- Header Principal -->
+        <header class="app-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="logo-small">
+                        <img src="src/css/icons/icon-512x512.png" alt="Logo" class="logo-icon">
+                    </div>
+                    <div class="header-titles">
+                        <h1 class="app-title">Lista 2026</h1>
+                        <span class="class-badge">3° SIS</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <button class="icon-button" onclick="shareList()" aria-label="Compartilhar lista">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="18" cy="5" r="3"/>
+                            <circle cx="6" cy="12" r="3"/>
+                            <circle cx="18" cy="19" r="3"/>
+                            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                        </svg>
+                    </button>
+                    <div class="user-menu">
+                        <button class="user-avatar" onclick="toggleUserMenu()">
+                            <span class="avatar-text">AL</span>
+                        </button>
+                        <div class="user-dropdown" id="userDropdown">
+                            <div class="dropdown-header">
+                                <p class="user-email">aluno@escola.edu</p>
+                                <p class="user-role">Editor</p>
+                            </div>
+                            <button onclick="logout()" class="dropdown-item danger">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                                    <polyline points="16 17 21 12 16 7"/>
+                                    <line x1="21" y1="12" x2="9" y2="12"/>
+                                </svg>
+                                Sair
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Estatísticas Rápidas -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <span class="stat-value" id="totalItems">0</span>
+                    <span class="stat-label">Itens</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="completedItems">0</span>
+                    <span class="stat-label">Comprados</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value" id="activeUsers">3</span>
+                    <span class="stat-label">Na lista</span>
+                </div>
+            </div>
+            
+            <!-- Barra de Progresso -->
+            <div class="progress-section">
+                <div class="progress-header">
+                    <span class="progress-label">Progresso da lista</span>
+                    <span class="progress-percentage" id="progressPercentage">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Área Principal da Lista -->
+        <main class="list-container">
+            
+            <!-- Filtros Rápidos -->
+            <div class="filter-tabs">
+                <button class="filter-tab active" onclick="filterItems('all')">
+                    <span>Todos</span>
+                </button>
+                <button class="filter-tab" onclick="filterItems('pending')">
+                    <span>Pendentes</span>
+                </button>
+                <button class="filter-tab" onclick="filterItems('completed')">
+                    <span>Comprados</span>
+                </button>
+            </div>
+            
+            <!-- Lista de Compras -->
+            <ul id="lista" class="shopping-list">
+                <!-- Items serão inseridos via JavaScript -->
+            </ul>
+            
+            <!-- Estado Vazio -->
+            <div id="emptyState" class="empty-state">
+                <div class="empty-illustration">🛒</div>
+                <h3>Lista vazia</h3>
+                <p>Adicione itens para começar suas compras</p>
+            </div>
+        </main>
+
+        <!-- Input Flutuante para Adicionar -->
+        <div class="add-item-section">
+            <div class="add-item-container">
+                <input type="text" 
+                       id="item" 
+                       class="add-input" 
+                       placeholder="Adicionar novo item..." 
+                       autocomplete="off"
+                       onkeypress="handleKeyPress(event)">
+                <button onclick="adicionarItem()" class="add-button">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"/>
+                        <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Compartilhamento -->
+    <div id="shareModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Compartilhar Lista</h3>
+                <button class="modal-close" onclick="closeShareModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p class="share-info">Lista 2026 3° SIS</p>
+                <div class="share-link-container">
+                    <input type="text" id="shareLink" readonly value="https://lista2026.app/l/3sis" class="share-input">
+                    <button onclick="copyShareLink()" class="copy-button">Copiar</button>
+                </div>
+                <div class="share-users">
+                    <h4>Usuários com acesso</h4>
+                    <div class="user-list">
+                        <div class="user-item">
+                            <span class="user-avatar-small">AL</span>
+                            <span>Ana Luiza (Você)</span>
+                            <span class="user-role-badge">Admin</span>
+                        </div>
+                        <div class="user-item">
+                            <span class="user-avatar-small">JP</span>
+                            <span>João Pedro</span>
+                            <span class="user-role-badge">Editor</span>
+                        </div>
+                        <div class="user-item">
+                            <span class="user-avatar-small">MC</span>
+                            <span>Maria Clara</span>
+                            <span class="user-role-badge">Visualizador</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script type="module" src="app.js"></script>
-
-
+    
     <script>
+        // Funções UI
+        function toggleUserMenu() {
+            const dropdown = document.getElementById('userDropdown');
+            dropdown.classList.toggle('show');
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                adicionarItem();
+            }
+        }
+
+        function shareList() {
+            document.getElementById('shareModal').style.display = 'flex';
+        }
+
+        function closeShareModal() {
+            document.getElementById('shareModal').style.display = 'none';
+        }
+
+        function copyShareLink() {
+            const input = document.getElementById('shareLink');
+            input.select();
+            document.execCommand('copy');
+            alert('Link copiado!');
+        }
+
+        function filterItems(type) {
+            // Implementar filtro
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.closest('.filter-tab').classList.add('active');
+        }
+
+        // Fechar dropdown ao clicar fora
+        window.onclick = function(event) {
+            if (!event.target.matches('.user-avatar')) {
+                const dropdown = document.getElementById('userDropdown');
+                if (dropdown.classList.contains('show')) {
+                    dropdown.classList.remove('show');
+                }
+            }
+            
+            const modal = document.getElementById('shareModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Registrar Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 navigator.serviceWorker.register('/service-worker.js')
-                    .then(registration => {
-                        console.log('ServiceWorker registrado com sucesso:', registration.scope);
-                    })
-                    .catch(error => {
-                        console.log('Falha ao registrar o ServiceWorker:', error);
-                    });
+                    .then(reg => console.log('✅ SW registrado:', reg.scope))
+                    .catch(err => console.log('❌ SW falhou:', err));
             });
         }
     </script>
-    
 </body>
 </html>
