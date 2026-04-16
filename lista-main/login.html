@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista 2026 3° SIS • Login</title>
+
+    <link rel="shortcut icon" href="src/css/img/Black White Rainbow Minimalist Simple Cute Childrenswear Logo (2).ico">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="src/css/login.css">
+</head>
+
+<body>
+    <div class="container">
+        <img src="src/css/icons/icon-512x512.png" alt="" id="logo">
+        <h2 class="titulo">LOGIN</h2>
+        <input type="email" id="email" placeholder="E-mail">
+        <input type="password" id="senha" placeholder="Senha">
+
+        <div class="botoes">
+            <button onclick="fazerLogin()">Entrar</button>
+            <button onclick="fazerCadastro()">Cadastrar</button>
+        </div>
+    </div>
+
+    <script type="module">
+        // Importar Supabase
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+        // Configurar Supabase
+        const supabase = createClient(
+            'https://izqrqllggskivqxcojfs.supabase.co',
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml6cXJxbGxnZ3NraXZxeGNvamZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzIxMTE2MDEsImV4cCI6MjA4NzY4NzYwMX0.X6QJoBIo_coFXxw7C7EyQwXuEzTIPkCwPlefbiWZx_I'
+        );
+
+        // Tornar funções globais
+        window.fazerLogin = async function () {
+            const email = document.getElementById('email').value;
+            const senha = document.getElementById('senha').value;
+
+            if (!email || !senha) {
+                alert('Preencha todos os campos!');
+                return;
+            }
+
+            try {
+                console.log('Tentando login com:', email);
+
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: senha
+                });
+
+                if (error) {
+                    console.error('Erro:', error);
+                    alert('Erro no login: ' + error.message);
+                    return;
+                }
+
+                console.log('Login bem sucedido!', data);
+                alert('Login realizado com sucesso!');
+
+                // Salvar no localStorage
+                localStorage.setItem('user', JSON.stringify(data.user));
+
+                // Redirecionar
+                window.location.href = 'index.html';
+
+            } catch (err) {
+                console.error('Erro geral:', err);
+                alert('Erro ao fazer login: ' + err.message);
+            }
+        };
+
+        window.fazerCadastro = async function () {
+            const email = document.getElementById('email').value;
+            const senha = document.getElementById('senha').value;
+
+            if (!email || !senha) {
+                alert('Preencha todos os campos!');
+                return;
+            }
+
+            if (senha.length < 6) {
+                alert('Senha deve ter pelo menos 6 caracteres!');
+                return;
+            }
+
+            try {
+                console.log('Tentando cadastro:', email);
+
+                const { data, error } = await supabase.auth.signUp({
+                    email: email,
+                    password: senha
+                });
+
+                if (error) {
+                    console.error('Erro:', error);
+
+                    if (error.message.includes('already registered')) {
+                        alert('Este e-mail já está cadastrado!');
+                    } else {
+                        alert('Erro no cadastro: ' + error.message);
+                    }
+                    return;
+                }
+
+                console.log('Cadastro realizado!', data);
+
+                if (data.user) {
+                    alert('Cadastro realizado! Você já pode fazer login.');
+                    document.getElementById('senha').value = '';
+                }
+
+            } catch (err) {
+                console.error('Erro geral:', err);
+                alert('Erro ao cadastrar: ' + err.message);
+            }
+        };
+
+        // Verificar se já está logado
+        async function verificarLogin() {
+            const { data } = await supabase.auth.getSession();
+            if (data.session) {
+                console.log('Já está logado, redirecionando...');
+                window.location.href = 'index.html';
+            }
+        }
+
+        verificarLogin();
+
+        // Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(reg => console.log('SW registrado'))
+                    .catch(err => console.log('SW falhou:', err));
+            });
+        }
+    </script>
+</body>
+
+</html>
